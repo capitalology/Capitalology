@@ -1,30 +1,347 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capitalology - Exploring Capitalism</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Capitalology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;800&family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --bg-darker: #0a0a0a;
+      --text-light: #e5e5e5;
+      --text-muted: #bbb;
+      --accent: #3a0ca3;
+      --border-color: #333;
+      --card-bg: #1a1a1a;
+      --hover-bg: #1e1e1e;
+    }
+    /* Reset and Box Sizing */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    /* Header and Navigation */
+    header {
+      background-color: var(--bg-darker);
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+      z-index: 1000;
+    }
+    header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+    nav ul li a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: var(--accent);
+    }
+    /* Mobile Navigation */
+    .menu-toggle {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        background-color: var(--bg-darker);
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s;
+      }
+      nav ul.open {
+        opacity: 1;
+        visibility: visible;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, #1f1f1f, var(--accent));
+      color: var(--text-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://source.unsplash.com/1600x900/?gothic') center/cover no-repeat;
+      opacity: 0.15;
+      z-index: -1;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+      animation: fadeInDown 1s ease forwards;
+      opacity: 0;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      font-style: italic;
+      color: var(--text-muted);
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
+      animation-delay: 0.5s;
+    }
+    .btn {
+      background-color: transparent;
+      color: var(--text-light);
+      padding: 0.75rem 1.5rem;
+      border: 1px solid var(--text-light);
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .btn:hover {
+      background-color: var(--hover-bg);
+      transform: translateY(-3px);
+    }
+    /* Sections */
+    .section {
+      max-width: 900px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      animation: fadeIn 1s ease forwards;
+      opacity: 0;
+    }
+    .section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+    .articles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-light);
+    }
+    .card p {
+      color: var(--text-muted);
+    }
+    /* Contact Section */
+    .contact {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid #444;
+    }
+    .contact input,
+    .contact textarea {
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1rem;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+    .contact button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .contact button:hover {
+      background-color: var(--hover-bg);
+      transform: translateY(-2px);
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: var(--bg-darker);
+      color: #777;
+      margin-top: 4rem;
+      font-size: 0.9rem;
+    }
+    /* Animations */
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Capitalology</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <section class="hero">
-        <h2>Exploring the World of Capitalism</h2>
-        <p>Deep dives into economic systems, markets, and financial insights.</p>
-        <a href="blog.html" class="btn">Read the Blog</a>
-    </section>
-    <footer>
-        <p>&copy; 2025 Capitalology. All rights reserved.</p>
-    </footer>
+  <header>
+    <h2>Capitalology</h2>
+    <div class="menu-toggle" id="mobile-menu">&#9776;</div>
+    <nav>
+      <ul id="nav-list">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#blog">Manuscripts</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <h1>Explore. Reflect. Transcend.</h1>
+    <p>A Gothic journey through modern dynamics.</p>
+    <a href="#blog" class="btn">Discover More</a>
+  </section>
+
+  <section class="section" id="blog">
+    <h2>Manuscripts</h2>
+    <div class="articles">
+      <div class="card">
+        <h3>Manuscript One</h3>
+        <p>Insightful analysis and creative narrative.</p>
+      </div>
+      <div class="card">
+        <h3>Manuscript Two</h3>
+        <p>Deep reflections on societal structures.</p>
+      </div>
+      <!-- Add more cards as needed -->
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <h2>About</h2>
+    <p>
+      This platform is dedicated to exploring intricate themes and challenging
+      perspectives. Replace this text with your own narrative.
+    </p>
+  </section>
+
+  <section class="section" id="contact">
+    <h2>Contact</h2>
+    <div class="contact">
+      <form>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Your email" required />
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" placeholder="Your message" required></textarea>
+
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Capitalology. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById("mobile-menu");
+    const navList = document.getElementById("nav-list");
+    menuToggle.addEventListener("click", () => {
+      navList.classList.toggle("open");
+    });
+
+    // Section fade-in on scroll
+    const sections = document.querySelectorAll(".section");
+    const observerOptions = {
+      threshold: 0.1,
+    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = 1;
+          entry.target.style.transform = "none";
+        }
+      });
+    }, observerOptions);
+    sections.forEach((section) => observer.observe(section));
+  </script>
 </body>
 </html>
